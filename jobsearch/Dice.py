@@ -1,8 +1,9 @@
 import urllib2
 import re
 import xml.etree.ElementTree as ET
+import mysql.connector
 import string
-
+import datetime
 
 def processDiceDataFromScraping():
 
@@ -46,26 +47,55 @@ def processDiceDataFromScraping():
 			if len(list(trTree)) == 4:
 				loopcount = loopcount + 1
 				totalcount = totalcount + 1
-				jobname = trTree[0][0][0].text.strip()
+				jobname = trTree[0][0][0].text.strip().lower()
 				joblink = trTree[0][0][0].attrib.get('href').strip()
 
 				if len(list(trTree[1])) == 1:
-					companyname = trTree[1][0].text.strip()
+					companyname = trTree[1][0].text.strip().lower()
 					companylink = trTree[1][0].attrib.get('href').strip()
 				else:
-					companyname = trTree[1].text.strip()
+					companyname = trTree[1].text.strip().lower()
 
 				if len(list(trTree[2])) == 1:
-					city = trTree[2][0].text.strip()
+					city = trTree[2][0].text.strip().lower()
 				else:
-					city = trTree[2].text.strip()
+					city = trTree[2].text.strip().lower()
 				date = trTree[3].text.strip()
 				
-
 				joblistfile.write(jobname + '\t' + joblink + '\t' + companyname + '\t' + companylink + '\t' + city + '\t' + date + '\n')
 
+def loadDiceDataIntoDBFromFile():
+
+	queryData=[]
+	joblistfile = open('dicejoblist.txt', 'r')
+	now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+	for line in joblistfile:
+		lineparts = line.split('\t')
+		postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%b-%d-%Y').strftime('%Y-%m-%d')
+		queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
+
+
+	queryString = "INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE LastDatePosted=%s, LastUpdate=%s"
+
+	#print mysqlStr
+	connection = mysql.connector.connect(user='gadgetsa', password='9oP987OC', host='jeevansgadgetsdb.cwxuk0j5syjg.us-west-2.rds.amazonaws.com', database='jobdata')
+	cursor = connection.cursor()
+
+	#loadfileStr = "LOAD DATA LOCAL INFILE './dicejoblist.txt' INTO TABLE jobdata.dice_job_list FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'"
+
+	while len(queryData) != 0:
+	    print 'doing'
+	    cursor.executemany(queryString, queryData[:999])
+	    del queryData[:999]
+	
+	connection.commit()
+	cursor.close()
+	connection.close()
+	connection.disconnect()
+
 def main():
-	processDiceDataFromScraping()
+	#processDiceDataFromScraping()
+	loadDiceDataIntoDBFromFile()
 
 if __name__ == "__main__":
 	main()
