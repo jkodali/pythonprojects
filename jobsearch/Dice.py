@@ -1,9 +1,22 @@
 import urllib2
+import os
 import re
 import xml.etree.ElementTree as ET
 import mysql.connector
 import string
 import datetime
+import ConfigParser
+
+class ConfigSettings:
+	config = ConfigParser.RawConfigParser()
+	executing_dir = os.path.dirname(__file__)
+	config_filename = os.path.join(executing_dir, './configlocal.cfg')
+	config.read(config_filename)
+
+	DB_HOST = config.get("mysqld", "DB_HOST")
+	DB_DATABASE = config.get("mysqld", "DB_DATABASE")
+	DB_USERNAME = config.get("mysqld", "DB_USERNAME")
+	DB_PASSWORD = config.get("mysqld", "DB_PASSWORD")		
 
 def processDiceDataFromScraping():
 
@@ -14,7 +27,9 @@ def processDiceDataFromScraping():
 
 	while loopcount == 50:
 		loopcount = 0
-		response = urllib2.urlopen("http://www.dice.com/job/results/20001?b=7&o=%s&caller=searchagain&n=50&q=technology+manager&src=19&x=all&p=z" % totalcount)
+		url = "http://www.dice.com/job/results/20001?b=7&o=%s&caller=searchagain&n=50&q=technology+manager&src=19&x=all&p=z" % totalcount
+		print url
+		response = urllib2.urlopen(url)
 		fullhtmlString = response.read()
 		response.close()
 
@@ -70,7 +85,7 @@ def loadDiceDataIntoDBFromFile():
 	joblistfile = open('dicejoblist.txt', 'r')
 	now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-	connection = mysql.connector.connect(user='gadgetsa', password='9oP987OC', host='jeevansgadgetsdb.cwxuk0j5syjg.us-west-2.rds.amazonaws.com', database='jobdata')
+	connection = mysql.connector.connect(user=ConfigSettings.DB_USERNAME, password=ConfigSettings.DB_PASSWORD, host=ConfigSettings.DB_HOST, database=ConfigSettings.DB_DATABASE)
 	cursor = connection.cursor()
 
 	linecount = 0;
@@ -80,9 +95,9 @@ def loadDiceDataIntoDBFromFile():
 		lineparts = line.split('\t')
 		postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%b-%d-%Y').strftime('%Y-%m-%d')
 		#queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
-		cursor.execute("INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (lineparts[0].replace("'", "\'"), lineparts[1], lineparts[2].replace("'", "\\'"), lineparts[4], postedDate, postedDate, now, postedDate, now))
-
-
+		query = "INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (lineparts[0].replace("'", "\'"), lineparts[1], lineparts[2].replace("'", "\\'"), lineparts[4], postedDate, postedDate, now, postedDate, now)
+		print query
+		cursor.execute(query)
 
 	#queryString = "INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE LastDatePosted=%s, LastUpdate=%s"
 
