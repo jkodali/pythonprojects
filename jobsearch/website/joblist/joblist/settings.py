@@ -61,9 +61,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'jobdata',
         'USER': 'appuser',
-        'PASSWROD': 'abcd1234',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'PASSWORD': 'abcd1234',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

@@ -8,4 +8,11 @@ class DiceJobList(models.Model):
 	City = models.CharField(max_length=128)
 	OriginalDatePosted = models.DateTimeField()
 	LastDatePosted = models.DateTimeField()
-	LastUpdated = models.DateTimeField()
+	LastUpdate = models.DateTimeField()
+
+	def __str__(self):
+		return self.Title
+
+	class Meta:
+		db_table = "dice_job_list"
+		ordering = ['-OriginalDatePosted']

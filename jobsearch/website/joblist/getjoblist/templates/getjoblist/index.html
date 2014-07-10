@@ -1,0 +1,26 @@
+<button type="button" onclick="window.location.href='./{{ prevPageNumber }}'">Previous</button>
+<button type="button" onclick="window.location.href='./{{ nextPageNumber }}'">Next</button>
+<table border="1">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Company</th>
+			<th>City</th>
+			<th>First Posted</th>
+			<th>Last Posted</th>
+			<th>Last Updated</th>
+		</tr>
+	</thead>
+{% if joblist %}
+    {% for job in joblist %}
+    <tr>
+        <td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
+        <td>{{ job.CompanyName }}</td>
+        <td>{{ job.City }}</td>
+        <td>{{ job.OriginalDatePosted }}</td>
+        <td>{{ job.LastDatePosted }}</td>
+        <td>{{ job.LastUpdate }}</td>
+    </tr>
+    {% endfor %}
+{% endif %}
+</table>
