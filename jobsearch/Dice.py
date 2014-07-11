@@ -95,7 +95,7 @@ def loadDiceDataIntoDBFromFile():
 		lineparts = line.split('\t')
 		postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%b-%d-%Y').strftime('%Y-%m-%d')
 		#queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
-		query = "INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (lineparts[0].replace("'", "\'"), lineparts[1], lineparts[2].replace("'", "\\'"), lineparts[4], postedDate, postedDate, now, postedDate, now)
+		query = "INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
 		print query
 		cursor.execute(query)
 
