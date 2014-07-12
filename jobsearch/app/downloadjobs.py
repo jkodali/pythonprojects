@@ -6,6 +6,7 @@ import mysql.connector
 import string
 import datetime
 import ConfigParser
+import sys, getopt
 
 class ConfigSettings:
 	config = ConfigParser.RawConfigParser()
@@ -23,11 +24,12 @@ def processDiceDataFromScraping():
 	loopcount = 50
 	totalcount = 0
 
-	joblistfile = open('dicejoblist.txt', 'w')
+	filename = '%sjoblist.txt' % jobsite
+	joblistfile = open(filename, 'w')
 
 	while loopcount == 50:
 		loopcount = 0
-		url = "http://www.dice.com/job/results/20001?b=7&o=%s&caller=searchagain&n=50&q=technology+manager&src=19&x=all&p=z" % totalcount
+		url = "http://www.dice.com/job/results/20001?b=7&o=%s&caller=searchagain&n=50&q=%s&src=19&x=all&p=z" % (totalcount, searchstring)
 		print url
 		response = urllib2.urlopen(url)
 		fullhtmlString = response.read()
@@ -79,10 +81,11 @@ def processDiceDataFromScraping():
 				
 				joblistfile.write(jobname + '\t' + joblink + '\t' + companyname + '\t' + companylink + '\t' + city + '\t' + date + '\n')
 
-def loadDiceDataIntoDBFromFile():
+def loadDataIntoDBFromFile():
 
 	queryData=[]
-	joblistfile = open('dicejoblist.txt', 'r')
+	filename = '%sjoblist.txt' % jobsite
+	joblistfile = open(filename, 'r')
 	now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 	connection = mysql.connector.connect(user=ConfigSettings.DB_USERNAME, password=ConfigSettings.DB_PASSWORD, host=ConfigSettings.DB_HOST, database=ConfigSettings.DB_DATABASE)
@@ -95,7 +98,7 @@ def loadDiceDataIntoDBFromFile():
 		lineparts = line.split('\t')
 		postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%b-%d-%Y').strftime('%Y-%m-%d')
 		#queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
-		query = "INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
+		query = "INSERT INTO job_list (JobSite, SearchString, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
 		print query
 		cursor.execute(query)
 
@@ -112,9 +115,27 @@ def loadDiceDataIntoDBFromFile():
 	connection.disconnect()
 	connection.close()
 
-def main():
-	processDiceDataFromScraping()
-	loadDiceDataIntoDBFromFile()
+jobsite = "dice"
+searchstring = "technology+manager"
+
+def downloadJobData():
+	if (jobsite == "dice"):
+		processDiceDataFromScraping()
+
+def main(argv):
+	try:
+		opts, args = getopt.getopt(argv, "j:s:")
+	except getopt.GetoptError:
+		print 'invalid arguments'
+
+	for opt, arg in opts:
+		if opt == '-j':
+			jobsite = arg
+		elif opt == '-s':
+			searchstring = arg
+
+	downloadJobData()
+	loadDataIntoDBFromFile()
 
 if __name__ == "__main__":
-	main()
+	main(sys.argv[1:])
