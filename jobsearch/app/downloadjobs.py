@@ -29,7 +29,7 @@ def processDiceDataFromScraping():
 
 	while loopcount == 50:
 		loopcount = 0
-		url = "http://www.dice.com/job/results/20001?b=7&o=%s&caller=searchagain&n=50&q=%s&src=19&x=all&p=z" % (totalcount, searchstring)
+		url = "http://www.dice.com/job/results/%s?b=7&o=%s&caller=searchagain&n=50&q=%s&src=19&x=all&p=z" % (ziptosearch, totalcount, searchstring)
 		print url
 		response = urllib2.urlopen(url)
 		fullhtmlString = response.read()
@@ -98,7 +98,7 @@ def loadDataIntoDBFromFile():
 		lineparts = line.split('\t')
 		postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%b-%d-%Y').strftime('%Y-%m-%d')
 		#queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
-		query = "INSERT INTO job_list (JobSite, SearchString, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
+		query = "INSERT INTO job_list (JobSite, SearchString, CityToSearch, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, citytosearch, lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
 		print query
 		cursor.execute(query)
 
@@ -117,6 +117,8 @@ def loadDataIntoDBFromFile():
 
 jobsite = "dice"
 searchstring = "technology+manager"
+citytosearch = 'dc'
+ziptosearch = '20001'
 
 def downloadJobData():
 	if (jobsite == "dice"):
@@ -133,6 +135,13 @@ def main(argv):
 			jobsite = arg
 		elif opt == '-s':
 			searchstring = arg
+		elif opt == '-c':
+			citytosearch = arg
+			if citytosearch == 'dc':
+				ziptosearch = '20001'
+			elif:
+				print 'invalid city to search %s' % citytosearch
+				sys.exit(1)
 
 	downloadJobData()
 	loadDataIntoDBFromFile()

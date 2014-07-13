@@ -1,7 +1,10 @@
 from django.db import models
 
 # Create your models here.
-class DiceJobList(models.Model):
+class JobList(models.Model):
+	JobSite = models.CharField(max_length=16)
+	SearchString = models.CharField(max_length=512)
+	CityToSearch = models.CharField(max_length=32)
 	Title = models.CharField(max_length=128)
 	JobLink = models.CharField(max_length=512)
 	CompanyName = models.CharField(max_length=64)
@@ -14,5 +17,5 @@ class DiceJobList(models.Model):
 		return self.Title
 
 	class Meta:
-		db_table = "dice_job_list"
+		db_table = "job_list"
 		ordering = ['-OriginalDatePosted']
