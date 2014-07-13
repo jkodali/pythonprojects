@@ -1,7 +1,19 @@
-<Label>Showing {{ start }} to {{ end }} of {{ total }}</Label>
-<br />
-<button type="button" onclick="window.location.href='./{{ prevPageNumber }}'">Previous</button>
-<button type="button" onclick="window.location.href='./{{ nextPageNumber }}'">Next</button>
+<div class="pagination">
+    <span class="step-links">
+        {% if joblist.has_previous %}
+            <a href="?page={{ joblist.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}.
+        </span>
+
+        {% if joblist.has_next %}
+            <a href="?page={{ joblist.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
 <table border="1">
 	<thead>
 		<tr>
