@@ -19,7 +19,7 @@ class ConfigSettings:
 	DB_USERNAME = config.get("mysqld", "DB_USERNAME")
 	DB_PASSWORD = config.get("mysqld", "DB_PASSWORD")		
 
-def processDiceDataFromScraping():
+def processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch):
 
 	loopcount = 50
 	totalcount = 0
@@ -81,7 +81,7 @@ def processDiceDataFromScraping():
 				
 				joblistfile.write(jobname + '\t' + joblink + '\t' + companyname + '\t' + companylink + '\t' + city + '\t' + date + '\n')
 
-def loadDataIntoDBFromFile():
+def loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch):
 
 	queryData=[]
 	filename = '%sjoblist.txt' % jobsite
@@ -98,7 +98,7 @@ def loadDataIntoDBFromFile():
 		lineparts = line.split('\t')
 		postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%b-%d-%Y').strftime('%Y-%m-%d')
 		#queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
-		query = "INSERT INTO job_list (JobSite, SearchString, CityToSearch, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, citytosearch, lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
+		query = "INSERT INTO job_list (JobSite, SearchString, CityToSearch, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, citytosearch, lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
 		print query
 		cursor.execute(query)
 
@@ -115,20 +115,23 @@ def loadDataIntoDBFromFile():
 	connection.disconnect()
 	connection.close()
 
-jobsite = "dice"
-searchstring = "technology+manager"
-citytosearch = 'dc'
-ziptosearch = '20001'
-
-def downloadJobData():
+def downloadJobData(jobsite, searchstring, citytosearch, ziptosearch):
 	if (jobsite == "dice"):
-		processDiceDataFromScraping()
+		processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch)
 
 def main(argv):
+
+	jobsite = "dice"
+	searchstring = "technology+manager"
+	citytosearch = 'dc'
+	ziptosearch = '20001'
+
+	opts = None
 	try:
-		opts, args = getopt.getopt(argv, "j:s:")
+		opts, args = getopt.getopt(argv, "j:s:c:")
 	except getopt.GetoptError:
 		print 'invalid arguments'
+		sys.exit(1)
 
 	for opt, arg in opts:
 		if opt == '-j':
@@ -139,12 +142,14 @@ def main(argv):
 			citytosearch = arg
 			if citytosearch == 'dc':
 				ziptosearch = '20001'
-			elif:
+			elif citytosearch == 'chicago':
+				ziptosearch = '60606'
+			else:
 				print 'invalid city to search %s' % citytosearch
 				sys.exit(1)
 
-	downloadJobData()
-	loadDataIntoDBFromFile()
+	downloadJobData(jobsite, searchstring, citytosearch, ziptosearch)
+	loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch)
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
