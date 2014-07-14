@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import JobList
+from models import JobList, SavedJobs
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from forms import GetJobListForm
+import datetime
 
 # Create your views here.
 def index(request):
@@ -16,6 +18,13 @@ def index(request):
 	return HttpResponse(message) 
 
 def joblist(request, jobsite, city, searchstring):
+	test = ""
+	if request.method == "POST":
+		form = GetJobListForm(request.POST)
+		if form.is_valid():
+			savedJob = SavedJobs(JobId=form.cleaned_data['idToSave'], LastUpdate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+			savedJob.save()
+
 	fulljoblist = JobList.objects.filter(JobSite=jobsite, SearchString=searchstring, CityToSearch=city)
 	paginator = Paginator(fulljoblist, 50)
 

@@ -58,6 +58,8 @@ def processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch
 		tableTree = ET.fromstring(maintableHTML)
 		tbodyTree = tableTree.find('tbody')
 
+		companylink = ""
+
 		# print maintableHTML
 
 		for trTree in tbodyTree.findall('tr'):

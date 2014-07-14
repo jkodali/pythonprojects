@@ -1,40 +1,66 @@
-<div class="pagination">
-    <span class="step-links">
-        {% if joblist.has_previous %}
-            <a href="?page={{ joblist.previous_page_number }}">previous</a>
-        {% endif %}
+<form method="post">
+		
+	<div class="pagination">
+	    <span class="step-links">
+	        {% if joblist.has_previous %}
+	            <a href="?page={{ joblist.previous_page_number }}">previous</a>
+	        {% endif %}
 
-        <span class="current">
-            Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}.
-        </span>
+	        <span class="current">
+	            Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}.
+	        </span>
 
-        {% if joblist.has_next %}
-            <a href="?page={{ joblist.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-</div>
+	        {% if joblist.has_next %}
+	            <a href="?page={{ joblist.next_page_number }}">next</a>
+	        {% endif %}
+	    </span>
+	</div>
+	
+	{% csrf_token %}
+	<input type="hidden" name="idToSave" id="idToSave"/>
+	
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Title</th>
+				<th>Company</th>
+				<th>City</th>
+				<th>First Posted</th>
+				<th>Last Posted</th>
+				<th>Last Updated</th>
+				<th>Save</th>
+			</tr>
+		</thead>
+	{% if joblist %}
+	    {% for job in joblist %}
+	    <tr>
+	        <td><input onclick="document.getElementById('idToSave').value={{ job.Id }}" style="font-size="6";vertical-align:bottom;overflow:visible; font-size:1em; display:inline;  margin:0; padding:0; border:0; border-bottom:1px solid blue; color:blue; cursor:pointer;" name="Submit" type="submit" value="*"></td>
+	    	<td>{{ job.Id }}</td>
+	        <td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
+	        <td>{{ job.CompanyName }}</td>
+	        <td>{{ job.City }}</td>
+	        <td>{{ job.OriginalDatePosted }}</td>
+	        <td>{{ job.LastDatePosted }}</td>
+	        <td>{{ job.LastUpdate }}</td>
+	    </tr>
+	    {% endfor %}
+	{% endif %}
+	</table>
 
-<table border="1">
-	<thead>
-		<tr>
-			<th>Title</th>
-			<th>Company</th>
-			<th>City</th>
-			<th>First Posted</th>
-			<th>Last Posted</th>
-			<th>Last Updated</th>
-		</tr>
-	</thead>
-{% if joblist %}
-    {% for job in joblist %}
-    <tr>
-        <td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
-        <td>{{ job.CompanyName }}</td>
-        <td>{{ job.City }}</td>
-        <td>{{ job.OriginalDatePosted }}</td>
-        <td>{{ job.LastDatePosted }}</td>
-        <td>{{ job.LastUpdate }}</td>
-    </tr>
-    {% endfor %}
-{% endif %}
-</table>
+	<div class="pagination">
+	    <span class="step-links">
+	        {% if joblist.has_previous %}
+	            <a href="?page={{ joblist.previous_page_number }}">previous</a>
+	        {% endif %}
+
+	        <span class="current">
+	            Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}.
+	        </span>
+
+	        {% if joblist.has_next %}
+	            <a href="?page={{ joblist.next_page_number }}">next</a>
+	        {% endif %}
+	    </span>
+	</div>
+</form>
