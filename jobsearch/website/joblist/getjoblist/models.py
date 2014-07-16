@@ -13,6 +13,7 @@ class JobList(models.Model):
 	OriginalDatePosted = models.DateTimeField()
 	LastDatePosted = models.DateTimeField()
 	LastUpdate = models.DateTimeField()
+	Saved = models.DecimalField(max_digits=1, decimal_places=0)
 
 	def __str__(self):
 		return self.Title
@@ -20,13 +21,3 @@ class JobList(models.Model):
 	class Meta:
 		db_table = "job_list"
 		ordering = ['-OriginalDatePosted']
-
-class SavedJobs(models.Model):
-	JobId = models.DecimalField(max_digits = 19, decimal_places=0)
-	LastUpdate = models.DateTimeField()
-
-	def __str__(self):
-		return self.JobId
-
-	class Meta:
-		db_table = "saved_jobs"

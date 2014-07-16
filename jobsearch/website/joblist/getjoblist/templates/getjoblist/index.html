@@ -3,24 +3,20 @@
 
 <form method="post">
 		
-	<div class="pagination">
-	    <span class="step-links">
-	        {% if joblist.has_previous %}
-	            <a href="?page={{ joblist.previous_page_number }}">previous</a>
-	        {% endif %}
+	<div class="paginate pag2 clearfix">
+		<span class="single">Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}</span>
+        {% if joblist.has_previous %}
+		<span><a href="?page={{ joblist.previous_page_number }}">prev</a></span> 
+        {% endif %}
 
-	        <span class="current">
-	            Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}.
-	        </span>
-
-	        {% if joblist.has_next %}
-	            <a href="?page={{ joblist.next_page_number }}">next</a>
-	        {% endif %}
-	    </span>
-	</div>
+        {% if joblist.has_next %}
+		<span><a href="?page={{ joblist.next_page_number }}">next</a></span>
+        {% endif %}
+	</div>	
 	
 	{% csrf_token %}
 	<input type="hidden" name="idToSave" id="idToSave"/>
+	<input type="hidden" name="idToUnSave" id="idToUnSave"/>
 	
 	<table id="joblisttable">
 		<thead>
@@ -46,7 +42,12 @@
     		{% else %}
     	<tr>
     		{% endif %}
-	        <td><input onclick="document.getElementById('idToSave').value={{ job.Id }}" style="font-size="6";vertical-align:bottom;overflow:visible; font-size:1em; display:inline;  margin:0; padding:0; border:0; border-bottom:1px solid blue; color:blue; cursor:pointer;" name="Submit" type="submit" value="*"></td>
+
+	        {% ifequal job.Saved  1 %}
+	        <td><label onclick="document.getElementById('idToSave').value=0; document.getElementById('idToUnSave').value = {{ job.Id }}; form.submit()" style="border:10;cursor:pointer;color:#FFA500""><font size="2">&#9733; {{ job.Id }}</font></label></td>
+	        {% else %}
+	        <td><label onclick="document.getElementById('idToSave').value={{ job.Id }}; document.getElementById('idToUnSave').value = 0; form.submit()" style="border:10;cursor:pointer;"><font size="2">&#9733; {{ job.Id }}</font></label></td>
+	        {% endifequal %}
 	        <!--
 	        {% if forloop.counter|divisibleby:2 %}
 	    	<td><img src="{{ STATIC_URL }}getjoblist/star-unsaved-blue.png"/></td>
@@ -54,7 +55,7 @@
 	    	<td><img src="{{ STATIC_URL }}getjoblist/star-unsaved-white.png"/></td>
 	    	{% endif %}
 	    	-->
-	        <td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
+	       <td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
 	        <td>{{ job.CompanyName }}</td>
 	        <td>{{ job.City }}</td>
 	        <td>{{ job.OriginalDatePosted }}</td>
@@ -64,19 +65,14 @@
 	{% endif %}
 	</table>
 
-	<div class="pagination">
-	    <span class="step-links">
-	        {% if joblist.has_previous %}
-	            <a href="?page={{ joblist.previous_page_number }}">previous</a>
-	        {% endif %}
+	<div class="paginate pag2 clearfix">
+		<span class="single">Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}</span>
+        {% if joblist.has_previous %}
+		<span><a href="?page={{ joblist.previous_page_number }}">prev</a></span> 
+        {% endif %}
 
-	        <span class="current">
-	            Page {{ joblist.number }} of {{ joblist.paginator.num_pages }}.
-	        </span>
-
-	        {% if joblist.has_next %}
-	            <a href="?page={{ joblist.next_page_number }}">next</a>
-	        {% endif %}
-	    </span>
-	</div>
+        {% if joblist.has_next %}
+		<span><a href="?page={{ joblist.next_page_number }}">next</a></span>
+        {% endif %}
+	</div>	
 </form>

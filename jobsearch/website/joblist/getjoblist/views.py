@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import JobList, SavedJobs
+from models import JobList
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import connection
 from forms import GetJobListForm
 import datetime
 
@@ -22,8 +23,11 @@ def joblist(request, jobsite, city, searchstring):
 	if request.method == "POST":
 		form = GetJobListForm(request.POST)
 		if form.is_valid():
-			savedJob = SavedJobs(JobId=form.cleaned_data['idToSave'], LastUpdate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-			savedJob.save()
+			cursor = connection.cursor()
+			if form.data['idToUnSave'] != 0:
+				cursor.execute("update job_list set Saved = 0 where Id = %s" % form.data['idToUnSave'])
+			if form.data['idToSave'] != 0:
+				cursor.execute("update job_list set Saved = 1 where Id = %s" % form.data['idToSave'])
 
 	fulljoblist = JobList.objects.filter(JobSite=jobsite, SearchString=searchstring, CityToSearch=city)
 	paginator = Paginator(fulljoblist, 50)

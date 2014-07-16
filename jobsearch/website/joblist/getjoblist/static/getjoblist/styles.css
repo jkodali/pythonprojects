@@ -1,7 +1,7 @@
-
 #joblisttable
 {
-	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	/*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
+	font-family: "Open Sans", "Lucida Grande", Sans-Serif;
 	font-size: 12px;
 	margin: 0px;
 	width: 100%;
@@ -61,3 +61,73 @@
 	color: #669;
 }
 */
+
+#w {
+  display: block;
+  width: 750px;
+  margin: 0 auto;
+  padding-top: 30px;
+  padding-bottom: 45px;
+}
+ 
+#content {
+  display: block;
+  width: 100%;
+  background: #fff;
+  padding: 25px 20px;
+  padding-bottom: 35px;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+ 
+.paginate {
+  display: block;
+  width: 100%;
+  font-size: 12;
+}
+
+.paginate.pag2 { /* second page styles */ }
+ 
+.paginate.pag2 span { font-weight: bold; }
+ 
+.paginate.pag2 span a {
+  display: block;
+  float: left;
+  color: #585858;
+  text-decoration: none;
+  padding: 3px 11px;
+  margin-right: 6px;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  background-color: #eee;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#eee));
+  background-image: -webkit-linear-gradient(top, #f7f7f7, #eee);
+  background-image: -moz-linear-gradient(top, #f7f7f7, #eee);
+  background-image: -ms-linear-gradient(top, #f7f7f7, #eee);
+  background-image: -o-linear-gradient(top, #f7f7f7, #eee);
+  background-image: linear-gradient(top, #f7f7f7, #eee);
+  -webkit-box-shadow: 2px 2px 4px -1px rgba(0,0,0, .55);
+  -moz-box-shadow: 2px 2px 4px -1px rgba(0,0,0, .55);
+  box-shadow: 2px 2px 4px -1px rgba(0,0,0, .55);
+}
+.paginate.pag2 span a:hover {
+  color: #3280dc;
+}
+.paginate.pag2 span a:active {
+  position: relative;
+  top: 1px;
+  -webkit-box-shadow: 1px 1px 3px -1px rgba(0,0,0, .55);
+  -moz-box-shadow: 1px 1px 3px -1px rgba(0,0,0, .55);
+  box-shadow: 1px 1px 3px -1px rgba(0,0,0, .55);
+}
+ 
+.paginate.pag2 span.single, .paginate.pag2 span.current {
+  display: block;
+  float: left;
+  padding: 6px 11px;
+  padding-top: 8px;
+  margin-right: 6px;
+  border-radius: 3px;
+  color: #676767;
+}
