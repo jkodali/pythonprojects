@@ -121,6 +121,15 @@ def downloadJobData(jobsite, searchstring, citytosearch, ziptosearch):
 	if (jobsite == "dice"):
 		processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch)
 
+def updateLastSearchTime(jobsite, searchstring, citytosearch):
+	now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+	connection = mysql.connector.connect(user=ConfigSettings.DB_USERNAME, password=ConfigSettings.DB_PASSWORD, host=ConfigSettings.DB_HOST, database=ConfigSettings.DB_DATABASE)
+	cursor = connection.cursor()
+	query = "INSERT INTO last_search_time (JobSite, SearchString, City, LastUpdate) values ('%s', '%s','%s','%s') ON DUPLICATE KEY UPDATE LastUpdate='%s'" % (jobsite, searchstring, citytosearch, now, now)
+	print query
+	cursor.execute(query)
+
+
 def main(argv):
 
 	jobsite = "dice"
@@ -152,6 +161,7 @@ def main(argv):
 
 	downloadJobData(jobsite, searchstring, citytosearch, ziptosearch)
 	loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch)
+	updateLastSearchTime(jobsite, searchstring, citytosearch)
 
 if __name__ == "__main__":
 	main(sys.argv[1:])

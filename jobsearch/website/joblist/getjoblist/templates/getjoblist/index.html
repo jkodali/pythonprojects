@@ -12,6 +12,8 @@
         {% if joblist.has_next %}
 		<span><a href="?page={{ joblist.next_page_number }}">next</a></span>
         {% endif %}
+
+        <span><a href="..\..\">home</a></span>
 	</div>	
 	
 	{% csrf_token %}
@@ -44,9 +46,9 @@
     		{% endif %}
 
 	        {% ifequal job.Saved  1 %}
-	        <td><label onclick="document.getElementById('idToSave').value=0; document.getElementById('idToUnSave').value = {{ job.Id }}; form.submit()" style="border:10;cursor:pointer;color:#FFA500""><font size="2">&#9733; {{ job.Id }}</font></label></td>
+	        <td><label onclick="document.getElementById('idToSave').value=0; document.getElementById('idToUnSave').value = {{ job.Id }}; form.submit()" style="border:10;cursor:pointer;color:#FFA500"><font size="2">&#9733;</font></label></td>
 	        {% else %}
-	        <td><label onclick="document.getElementById('idToSave').value={{ job.Id }}; document.getElementById('idToUnSave').value = 0; form.submit()" style="border:10;cursor:pointer;"><font size="2">&#9733; {{ job.Id }}</font></label></td>
+	        <td><label onclick="document.getElementById('idToSave').value={{ job.Id }}; document.getElementById('idToUnSave').value = 0; form.submit()" style="border:10;cursor:pointer;"><font size="2">&#9733;</font></label></td>
 	        {% endifequal %}
 	        <!--
 	        {% if forloop.counter|divisibleby:2 %}
@@ -74,5 +76,7 @@
         {% if joblist.has_next %}
 		<span><a href="?page={{ joblist.next_page_number }}">next</a></span>
         {% endif %}
+
+        <span><a href="..\..\">home</a></span>
 	</div>	
 </form>

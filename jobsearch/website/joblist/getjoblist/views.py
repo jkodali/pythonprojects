@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from models import JobList
+from models import JobList, LastSearchTime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import connection
 from forms import GetJobListForm
@@ -8,14 +8,39 @@ import datetime
 
 # Create your views here.
 def index(request):
-	message = ""
-	citylist = ['dc','chicago']
-	searchstringlist = ['technology+manager']
-	jobsitelist = ['dice']
-	for jobsite in jobsitelist:
-		for city in citylist:
-			for searchstring in searchstringlist:
-				message = message + "<a href='./%s/%s/%s?page=1'>%s - %s - %s</a><br />" % (jobsite, city, searchstring, jobsite, city, searchstring)
+	searchlist = LastSearchTime.objects.all()
+
+	city = ''
+	jobsite = ''
+	treeList = {}
+	for search in searchlist:
+		if city != search.City:
+			city = search.City
+			treeList[city] = {}
+			jobsite = search.JobSite
+			treeList[city][jobsite] = {}
+			treeList[city][jobsite][search.SearchString] = ''
+		elif jobsite != search.JobSite:
+			jobsite = search.JobSite
+			treeList[search.City][jobsite] = {}
+			treeList[search.City][jobsite][search.SearchString] = ''
+		else:
+			treeList[search.City][search.JobSite][search.SearchString] = ''
+
+	message = "<ul>"
+	for city in treeList:
+		message = message + "<li><font face='Sans-Serif'>%s</font>" % city
+		message = message + "<ul>"
+		for jobsite in treeList[city]:
+			message = message + "<li><font face='Sans-Serif'>%s</font>" % jobsite
+			message = message + "<ul>"
+			for searchstring in treeList[city][jobsite]:
+				message = message + "<li><a href='./%s/%s/%s?page=1'><font face='Sans-Serif'>%s</font></a></li>" % (jobsite, city, searchstring, searchstring)
+			message = message + "</ul></li>"
+		message = message + "</ul></li>"
+	message = message + "</ul>"
+
+
 	return HttpResponse(message) 
 
 def joblist(request, jobsite, city, searchstring):
