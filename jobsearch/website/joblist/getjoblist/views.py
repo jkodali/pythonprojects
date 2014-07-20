@@ -19,13 +19,13 @@ def index(request):
 			treeList[city] = {}
 			jobsite = search.JobSite
 			treeList[city][jobsite] = {}
-			treeList[city][jobsite][search.SearchString] = ''
+			treeList[city][jobsite][search.SearchString] = search.LastUpdate
 		elif jobsite != search.JobSite:
 			jobsite = search.JobSite
 			treeList[search.City][jobsite] = {}
-			treeList[search.City][jobsite][search.SearchString] = ''
+			treeList[search.City][jobsite][search.SearchString] = search.LastUpdate
 		else:
-			treeList[search.City][search.JobSite][search.SearchString] = ''
+			treeList[search.City][search.JobSite][search.SearchString] = search.LastUpdate
 
 	message = "<ul>"
 	for city in treeList:
@@ -35,7 +35,8 @@ def index(request):
 			message = message + "<li><font face='Sans-Serif'>%s</font>" % jobsite
 			message = message + "<ul>"
 			for searchstring in treeList[city][jobsite]:
-				message = message + "<li><a href='./%s/%s/%s?page=1'><font face='Sans-Serif'>%s</font></a></li>" % (jobsite, city, searchstring, searchstring)
+				updated = treeList[city][jobsite][searchstring].strftime('%Y-%m-%d %H:%M:%S')
+				message = message + "<li><a href='./%s/%s/%s?page=1'><font face='Sans-Serif'>%s - %s</font></a></li>" % (jobsite, city, searchstring, searchstring, updated)
 			message = message + "</ul></li>"
 		message = message + "</ul></li>"
 	message = message + "</ul>"
