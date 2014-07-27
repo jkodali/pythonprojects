@@ -28,6 +28,7 @@ def index(request):
 			treeList[search.City][search.JobSite][search.SearchString] = search.LastUpdate
 
 	message = "<ul>"
+	message = message + "<li><a href='./savedjobs'><font face='Sans-Serif'>Saved Jobs</font></a></li>"
 	for city in treeList:
 		message = message + "<li><font face='Sans-Serif'>%s</font>" % city
 		message = message + "<ul>"
@@ -41,11 +42,20 @@ def index(request):
 		message = message + "</ul></li>"
 	message = message + "</ul>"
 
-
 	return HttpResponse(message) 
 
+def savedjobs(request):
+	if request.method == "POST":
+		form = GetJobListForm(request.POST)
+		cursor = connection.cursor()
+		if form.data['idToUnSave'] != 0:
+			cursor.execute("update job_list set Saved = 0 where Id = %s" % form.data['idToUnSave'])
+
+	savedJobList = JobList.objects.filter(Saved=1)
+	context = {'savedJobList': savedJobList}
+	return render(request, 'getjoblist/savedjobs.html', context)
+
 def joblist(request, jobsite, city, searchstring):
-	test = ""
 	if request.method == "POST":
 		form = GetJobListForm(request.POST)
 		if form.is_valid():

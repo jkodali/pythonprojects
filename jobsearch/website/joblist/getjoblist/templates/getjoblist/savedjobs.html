@@ -1,0 +1,58 @@
+{% load staticfiles %}
+<link href="{{ STATIC_URL }}getjoblist/styles.css" rel="stylesheet" type="text/css" />
+
+<form method="post">
+		
+	<div class="paginate pag2 clearfix">
+        <span><a href=".">home</a></span>
+	</div>	
+	
+	{% csrf_token %}
+	<input type="hidden" name="idToUnSave" id="idToUnSave"/>
+	
+	<table id="joblisttable">
+		<thead>
+			<tr>
+				<th scope="col" class="rounded-left"></th>
+				<th>Title</th>
+				<th>Company</th>
+				<th>City</th>
+				<th>First Posted</th>
+				<th scope="col" class="rounded-right">Job Site</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<td colspan="5" class="rounded-foot-left"></td>
+				<td class="rounded-foot-right"></td>
+			</tr>
+		</tfoot>
+
+	{% if savedJobList %}
+	    {% for job in savedJobList %}
+	    	{% if forloop.counter|divisibleby:2 %}
+    	<tr class="odd">
+    		{% else %}
+    	<tr>
+    		{% endif %}
+
+	        <td><label onclick="document.getElementById('idToUnSave').value = {{ job.Id }}; form.submit()" style="border:10;cursor:pointer;color:#FFA500"><font size="2">&#9733;</font></label></td>
+
+	        {% if job.JobSite == 'dice' %}
+	       	<td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
+	       	{% else %}
+	       	<td><a href="{{ job.JobLink }}/">{{ job.Title }}</a></td>
+	       	{% endif %}
+	       	<td>{{ job.CompanyName }}</td>
+	       	<td>{{ job.City }}</td>
+	       	<td>{{ job.OriginalDatePosted }}</td>
+	       	<td>{{ job.JobSite }}</td>
+	    </tr>
+	    {% endfor %}
+	{% endif %}
+	</table>
+
+	<div class="paginate pag2 clearfix">
+        <span><a href=".">home</a></span>
+	</div>	
+</form>
