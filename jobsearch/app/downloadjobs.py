@@ -7,6 +7,8 @@ import string
 import datetime
 import ConfigParser
 import sys, getopt
+import time
+from linkedin import linkedin
 
 class ConfigSettings:
 	config = ConfigParser.RawConfigParser()
@@ -19,7 +21,33 @@ class ConfigSettings:
 	DB_USERNAME = config.get("mysqld", "DB_USERNAME")
 	DB_PASSWORD = config.get("mysqld", "DB_PASSWORD")		
 
-def processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch):
+def processLinkedInData(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime):
+	authentication = linkedin.LinkedInDeveloperAuthentication('75ph7mwmqazlp9', 'wauOWNOXgZqBKBWo', '4468dda6-1a33-4007-a175-0e03dc72282b', 'a9aee8ab-984b-4a3d-b8e9-a4e459c7d10f', 
+		'http:\\jeevansgadgets.com\getjoblist', linkedin.PERMISSIONS.enums.values())
+	application = linkedin.LinkedInApplication(authentication)
+
+	loopcount = 20
+	totalcount = 0
+
+	filename = '%sjoblist.txt' % jobsite
+	joblistfile = open(filename, 'w')
+
+	while loopcount == 20:
+		print 'downloading %s-%s' % (totalcount, totalcount+20)
+		loopcount = 0
+		data = application.search_job(selectors=[{'jobs': ['id', 'customer-job-code', 'posting-date', 'active', 'company', 'position', 'site-job-url', 'location-description']}], 
+			params={'keywords': searchstring, 'count': 20, 'start': totalcount, 'postal-code': ziptosearch, 'country-code': 'US', 'distance': 50, 'sort': 'DD'})
+
+		#print data
+		for job in data["jobs"]["values"]:
+			loopcount = loopcount + 1
+			totalcount = totalcount + 1
+			date = datetime.datetime.strptime(str(job["postingDate"]["month"]) + '-' + str(job["postingDate"]["day"]) + '-' + str(job["postingDate"]["year"]), '%m-%d-%Y')
+			if date >= lastDownloadedTime:
+				joblistfile.write(job["position"]["title"].encode('ascii', 'ignore').strip() + '\t' + job["siteJobUrl"].strip() + '\t' + job["company"]["name"].encode('ascii', 'ignore').strip() + '\t' + '' + '\t' + job["locationDescription"].strip() + '\t' + date.strftime('%Y-%m-%d') + '\n')
+
+
+def processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime):
 
 	loopcount = 50
 	totalcount = 0
@@ -79,9 +107,10 @@ def processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch
 					city = trTree[2][0].text.strip().lower()
 				else:
 					city = trTree[2].text.strip().lower()
-				date = trTree[3].text.strip()
-				
-				joblistfile.write(jobname + '\t' + joblink + '\t' + companyname + '\t' + companylink + '\t' + city + '\t' + date + '\n')
+				date = datetime.datetime.strptime(trTree[3].text.strip(), '%b-%d-%Y')
+
+				if date >= lastDownloadedTime:
+					joblistfile.write(jobname + '\t' + joblink + '\t' + companyname + '\t' + companylink + '\t' + city + '\t' + date.strftime('%Y-%m-%d') + '\n')
 
 def loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch):
 
@@ -96,12 +125,13 @@ def loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch):
 	linecount = 0;
 	for line in joblistfile:
 		linecount = linecount + 1
-		print linecount
 		lineparts = line.split('\t')
-		postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%b-%d-%Y').strftime('%Y-%m-%d')
+		postedDate = lineparts[5].strip()
+		#print linecount
+		#postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%m-%d-%Y').strftime('%Y-%m-%d')
 		#queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
-		query = "INSERT INTO job_list (JobSite, SearchString, CityToSearch, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, citytosearch, lineparts[0].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2].replace("'", "\\'"), lineparts[4].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
-		print query
+		query = "INSERT INTO job_list (JobSite, SearchString, CityToSearch, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, citytosearch, lineparts[0][:128].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2][:64].replace("'", "\\'"), lineparts[4][:128].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
+		#print query
 		cursor.execute(query)
 
 	#queryString = "INSERT INTO dice_job_list (Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE LastDatePosted=%s, LastUpdate=%s"
@@ -116,23 +146,45 @@ def loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch):
 	cursor.close()
 	connection.disconnect()
 	connection.close()
+	print 'Total Lines: %s' % linecount
 
-def downloadJobData(jobsite, searchstring, citytosearch, ziptosearch):
+def downloadJobData(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime):
 	if (jobsite == "dice"):
-		processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch)
+		processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime)
+	elif jobsite == "linkedin":
+		processLinkedInData(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime)
 
 def updateLastSearchTime(jobsite, searchstring, citytosearch):
 	now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 	connection = mysql.connector.connect(user=ConfigSettings.DB_USERNAME, password=ConfigSettings.DB_PASSWORD, host=ConfigSettings.DB_HOST, database=ConfigSettings.DB_DATABASE)
 	cursor = connection.cursor()
 	query = "INSERT INTO last_search_time (JobSite, SearchString, City, LastUpdate) values ('%s', '%s','%s','%s') ON DUPLICATE KEY UPDATE LastUpdate='%s'" % (jobsite, searchstring, citytosearch, now, now)
-	print query
+	#print query
+	cursor.execute(query)
+	cursor.close()
+	connection.disconnect()
+	connection.close()
+
+def getLastDownloadedTime(jobsite, searchstring, citytosearch):
+	query = "select LastUpdate from last_search_time where JobSite = '%s' and SearchString = '%s' and City = '%s'" % (jobsite, searchstring, citytosearch)
+	#print query
+	connection = mysql.connector.connect(user=ConfigSettings.DB_USERNAME, password=ConfigSettings.DB_PASSWORD, host=ConfigSettings.DB_HOST, database=ConfigSettings.DB_DATABASE)
+	cursor = connection.cursor()
 	cursor.execute(query)
 
+	lastUpdate = None
+	for LastUpdate in cursor:
+		lastUpdate = LastUpdate[0]
+	cursor.close()
+	connection.disconnect()
+	connection.close()
+	if lastUpdate is None:
+		lastUpdate = datetime.datetime.strptime('1900-01-01', '%Y-%m-%d')
+	return lastUpdate
 
 def main(argv):
 
-	jobsite = "dice"
+	jobsite = "linkedin"
 	searchstring = "technology+manager"
 	citytosearch = 'dc'
 	ziptosearch = '20001'
@@ -147,9 +199,9 @@ def main(argv):
 	for opt, arg in opts:
 		if opt == '-j':
 			jobsite = arg
-		elif opt == '-s':
+		if opt == '-s':
 			searchstring = arg
-		elif opt == '-c':
+		if opt == '-c':
 			citytosearch = arg
 			if citytosearch == 'dc':
 				ziptosearch = '20001'
@@ -159,7 +211,10 @@ def main(argv):
 				print 'invalid city to search %s' % citytosearch
 				sys.exit(1)
 
-	downloadJobData(jobsite, searchstring, citytosearch, ziptosearch)
+	print 'doing: %s %s %s' % (jobsite, searchstring, citytosearch)
+	lastDownloadedTime = getLastDownloadedTime(jobsite, searchstring, citytosearch)
+	print 'LastDownloaded on: %s' % lastDownloadedTime
+	downloadJobData(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime)
 	loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch)
 	updateLastSearchTime(jobsite, searchstring, citytosearch)
 
