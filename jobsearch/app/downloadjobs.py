@@ -31,34 +31,26 @@ def processLinkedInData(jobsite, searchstring, citytosearch, ziptosearch, lastDo
 	filename = '%sjoblist.txt' % jobsite
 	joblistfile = open(filename, 'w')
 
-	dateToRun = datetime.datetime.now()
-	# go back 20 days if downloading for the first time
-	if lastDownloadedTime.year == 1900:
-		lastDownloadedTime = dateToRun-timedelta(days=20)
+	totalcount = 0
+	loopcount = 20
+	while loopcount == 20:
+		print 'downloading %s-%s' % (totalcount, totalcount+20)
+		loopcount = 0
+		data = application.search_job(selectors=[{'jobs': ['id', 'customer-job-code', 'posting-date', 'active', 'company', 'position', 'site-job-url', 'location-description']}], 
+			params={'active': 'true', 'facet': 'job-function,it', 'keywords': searchstring, 'count': 20, 'start': totalcount, 'postal-code': ziptosearch, 'country-code': 'US', 'distance': 50, 'sort': 'DD'})
 
-	while dateToRun >= lastDownloadedTime:
-		totalcount = 0
-		loopcount = 20
-		while loopcount == 20:
-			print 'downloading %s-%s for date %s' % (totalcount, totalcount+20, dateToRun.strftime('%Y%m%d'))
-			loopcount = 0
-			data = application.search_job(selectors=[{'jobs': ['id', 'customer-job-code', 'posting-date', 'active', 'company', 'position', 'site-job-url', 'location-description']}], 
-				params={'active': 'true', 'facet': 'date-posted,' + dateToRun.strftime('%Y%m%d'), 'facet': 'job-function,it', 'keywords': searchstring, 'count': 20, 'start': totalcount, 'postal-code': ziptosearch, 'country-code': 'US', 'distance': 50, 'sort': 'DD'})
+		#print data
 
-			print data
-			break
-
-			if data["jobs"]["_total"] == 0:
-				continue
-			for job in data["jobs"]["values"]:
-				loopcount = loopcount + 1
-				totalcount = totalcount + 1
-				date = datetime.datetime.strptime(str(job["postingDate"]["month"]) + '-' + str(job["postingDate"]["day"]) + '-' + str(job["postingDate"]["year"]), '%m-%d-%Y')
-				if date >= lastDownloadedTime:
-					joblistfile.write(job["position"]["title"].encode('ascii', 'ignore').strip() + '\t' + job["siteJobUrl"].strip() + '\t' + job["company"]["name"].encode('ascii', 'ignore').strip() + '\t' + '' + '\t' + job["locationDescription"].strip() + '\t' + date.strftime('%Y-%m-%d') + '\n')
-		dateToRun = dateToRun-timedelta(days=1)
-		break
-
+		if data["jobs"]["_total"] == 0:
+			continue
+		for job in data["jobs"]["values"]:
+			loopcount = loopcount + 1
+			totalcount = totalcount + 1
+			date = datetime.datetime.strptime(str(job["postingDate"]["month"]) + '-' + str(job["postingDate"]["day"]) + '-' + str(job["postingDate"]["year"]), '%m-%d-%Y')
+			url = job["siteJobUrl"].strip()
+			url = re.sub('&trk.*', '', url)
+			if date >= lastDownloadedTime:
+				joblistfile.write(job["position"]["title"].encode('ascii', 'ignore').strip() + '\t' + url + '\t' + job["company"]["name"].encode('ascii', 'ignore').strip() + '\t' + '' + '\t' + job["locationDescription"].strip() + '\t' + date.strftime('%Y-%m-%d') + '\n')
 
 def processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime):
 
@@ -228,8 +220,8 @@ def main(argv):
 	lastDownloadedTime = getLastDownloadedTime(jobsite, searchstring, citytosearch)
 	print 'LastDownloaded on: %s' % lastDownloadedTime
 	downloadJobData(jobsite, searchstring, citytosearch, ziptosearch, lastDownloadedTime)
-	#loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch)
-	#updateLastSearchTime(jobsite, searchstring, citytosearch)
+	loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch)
+	updateLastSearchTime(jobsite, searchstring, citytosearch)
 
 if __name__ == "__main__":
 	main(sys.argv[1:])

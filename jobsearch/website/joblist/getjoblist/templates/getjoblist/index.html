@@ -58,7 +58,11 @@
 	    	<td><img src="{{ STATIC_URL }}getjoblist/star-unsaved-white.png"/></td>
 	    	{% endif %}
 	    	-->
-	       <td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
+	    	{% ifequal job.JobSite 'dice' %}
+	       	<td><a href="http://dice.com/{{ job.JobLink }}/">{{ job.Title }}</a></td>
+	       	{% else %}
+	       	<td><a href="{{ job.JobLink }}">{{ job.Title }}</a></td>
+	       	{% endifequal %}
 	        <td>{{ job.CompanyName }}</td>
 	        <td>{{ job.City }}</td>
 	        <td>{{ job.OriginalDatePosted }}</td>
