@@ -20,7 +20,7 @@ class JobList(models.Model):
 
 	class Meta:
 		db_table = "job_list"
-		ordering = ['-OriginalDatePosted']
+		ordering = ['-OriginalDatePosted','-Id']
 
 class LastSearchTime(models.Model):
 	Id = models.DecimalField(max_digits=19, decimal_places=0)
