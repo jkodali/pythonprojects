@@ -1,10 +1,28 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
+from rest_framework.response import Response
 from django.http import HttpResponse
-from models import JobList, LastSearchTime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import connection
-from forms import GetJobListForm
 import datetime
+from rest_framework import generics
+
+from models import JobList, LastSearchTime
+from forms import GetJobListForm
+from serializers import JobListSerializer, LastSearchTimeSerializer
+
+
+class LastSearchTimeList(generics.ListCreateAPIView):
+	queryset = LastSearchTime.objects.all()
+	serializer_class = LastSearchTimeSerializer
+
+class JobListAPI(generics.ListCreateAPIView):
+	serializer_class = JobListSerializer
+
+	def get_queryset(self):
+		jobsite = self.kwargs['jobsite']
+		searchstring = self.kwargs['searchstring']
+		city = self.kwargs['city']
+		return JobList.objects.filter(JobSite=jobsite, SearchString=searchstring, CityToSearch=city)
 
 # Create your views here.
 def index(request):
