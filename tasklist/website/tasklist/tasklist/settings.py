@@ -1,5 +1,5 @@
 """
-Django settings for joblist project.
+Django settings for tasklist project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.6/topics/settings/
@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x2vb^cm*2v0^=wu3w8tm^tb7^@oga!-#b@oj8)yb*#lv67mpw#'
+SECRET_KEY = 'wu(tmm=rg0zch9=ps_hdiku1c-pt5kcrno7ecw5&v=!vfyvot&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,8 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'getjoblist'
+    'managetasks'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -49,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'joblist.urls'
+ROOT_URLCONF = 'tasklist.urls'
 
-WSGI_APPLICATION = 'joblist.wsgi.application'
+WSGI_APPLICATION = 'tasklist.wsgi.application'
 
 
 # Database
@@ -60,7 +59,7 @@ WSGI_APPLICATION = 'joblist.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jobdata',
+        'NAME': 'taskdata',
         'USER': 'appuser',
         'PASSWORD': 'abcd1234',
         'HOST': 'localhost',
@@ -98,7 +97,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-
-REST_FRAMEWORK = {
-    'PAGINATE_BY': 20
-}
