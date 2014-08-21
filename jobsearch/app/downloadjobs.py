@@ -102,7 +102,7 @@ def processDiceDataFromScraping(jobsite, searchstring, citytosearch, ziptosearch
 				jobname = trTree[0][0][0].text.strip().lower()
 				joblink = trTree[0][0][0].attrib.get('href').strip()
 
-				if len(list(trTree[1])) == 1:
+				if len(list(trTree[1])) == 1 and trTree[1][0].text != None:
 					companyname = trTree[1][0].text.strip().lower()
 					companylink = trTree[1][0].attrib.get('href').strip()
 				else:
