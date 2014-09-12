@@ -1,0 +1,18 @@
+create default set of groceries items - probably can keep them in memory of app
+attributes to items
+	category
+	store
+	date
+added/inserted/deleted data should be saved into db
+store by user
+different lists
+ability to share lists/individual tasks
+app/app updates instead of going to db and update
+api to read/write data
+oauth2.0
+web ui to show tasks
+group by date/category/store
+support time in addition to date for tasks
+send a reminder - ability to set different reminder schedules
+create database
+repeatable jobs - without having to wait for task to finish and after task is finished

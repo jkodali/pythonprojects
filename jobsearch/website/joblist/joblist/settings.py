@@ -57,27 +57,27 @@ WSGI_APPLICATION = 'joblist.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'jobdata',
-        'USER': 'appuser',
-        'PASSWORD': 'abcd1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
-
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.mysql',
 #        'NAME': 'jobdata',
-#        'USER': 'gadgetsa',
-#        'PASSWORD': '9oP987OC',
-#        'HOST': 'jeevansgadgetsdb.cwxuk0j5syjg.us-west-2.rds.amazonaws.com',
+#        'USER': 'appuser',
+#        'PASSWORD': 'abcd1234',
+#        'HOST': 'localhost',
 #        'PORT': '3306',
 #    }
 #}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jobdata',
+        'USER': 'gadgetsa',
+        'PASSWORD': '9oP987OC',
+        'HOST': 'jeevansgadgetsdb.cwxuk0j5syjg.us-west-2.rds.amazonaws.com',
+        'PORT': '3306',
+    }
+}
 
 
 # Internationalization
