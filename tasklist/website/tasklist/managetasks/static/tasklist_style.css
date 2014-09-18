@@ -6,70 +6,83 @@ body
 
 #box-table-a
 {
-	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-family: "Verdana", "Geneva", Sans-Serif;
 	font-size: 12px;
 	margin: 45px;
 	width: 700px;
 	text-align: left;
+	border-bottom: 1px solid;
+	border-top: 1px solid;
+	border-left: 1px solid;
+	border-right: 1px solid;
 	border-collapse: collapse;
 }
 #box-table-a td:nth-child(2)
 {
-	width:550px;
+	width:570px;
 }
 #box-table-a td:nth-child(1)
 {
-	width:30px;
+	width:10px;
 }
 .normal td
 {
 	padding: 2px;
-	background: #e8edff; 
-	border-bottom: 1px solid #fff;
+	/*background: #e8edff;*/
+	/*border-bottom: 1px solid #fff;*/
 	color: #669;
-	border-top: 1px solid transparent;
+	/*border-top: 1px solid transparent;*/
 }
-.normal tr:hover td
+.normal tr:hover
 {
-	background: #d0dafd;
+	/*background: #ffffcc;*/
+	background: #e8eef7;
+	/*background: #d0dafd;*/
 	color: #339;
 }
-.past-header
+
+.selected-row td
 {
-	font-size: 13px;
+	background: #e8eef7;
+}
+
+.past-header td
+{
+	font-size: 12px;
 	font-weight: bold;
-	padding: 8px;
-	background: #FE9A2E; 
+	padding: 5px;
+	background: #F5D0A9; 
+	/*border-bottom: 1px solid #fff;*/
+	color: #669;
+	/*border-top: 1px solid transparent;*/
+}
+
+.today-header td
+{
+	font-size: 12px;
+	font-weight: bold;
+	padding: 5px;
+	background: #CEF6CE; 
 	border-bottom: 1px solid #fff;
 	color: #669;
 	border-top: 1px solid transparent;
 }
-.today-header
+.tomorrow-header td
 {
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: bold;
-	padding: 8px;
-	background: #00FF00; 
+	padding: 5px;
+	background: #F2F5A9; 
 	border-bottom: 1px solid #fff;
 	color: #669;
 	border-top: 1px solid transparent;
 }
-.tomorrow-header
+.future-header td
 {
-	font-size: 13px;
+	font-size: 12px;
 	font-weight: bold;
-	padding: 8px;
-	background: #FFFF00; 
-	border-bottom: 1px solid #fff;
-	color: #669;
-	border-top: 1px solid transparent;
-}
-.future-header
-{
-	font-size: 13px;
-	font-weight: bold;
-	padding: 8px;
-	background: #A9A9F5; 
+	padding: 5px;
+	background: #E0E0F8; 
 	border-bottom: 1px solid #fff;
 	color: #669;
 	border-top: 1px solid transparent;

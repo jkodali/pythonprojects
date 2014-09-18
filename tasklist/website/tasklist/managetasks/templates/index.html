@@ -1,21 +1,21 @@
 <html>
     <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-      <title>Task List</title>
-      <link rel="stylesheet" href="{{ STATIC_URL }}tasklist_style.css">
-      <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Task List</title>
+        <link rel="stylesheet" href="{{ STATIC_URL }}tasklist_style.css">
+        <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+        <script src="{{ STATIC_URL }}js/jquery.js"></script>
+        <script src="{{ STATIC_URL }}js/tasklist.js"></script>
     </head>
 
-
-    <body>
     <form>
         {% csrf_token %}
-        <table id="box-table-a">
+        <table id="box-table-a" name="box-table-a">
             <tbody class="past-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Past Tasks</td>
+                    <td colspan="2">Past</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -30,7 +30,7 @@
             <tbody class="today-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Today's Tasks</td>
+                    <td colspan="2">Today</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -45,7 +45,7 @@
             <tbody class="tomorrow-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Tomorrow's Tasks</td>
+                    <td colspan="2">Tomorrow</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -60,7 +60,7 @@
             <tbody class="future-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Future and No Date Tasks</td>
+                    <td colspan="2">Future and No Date</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -83,5 +83,4 @@
             </tbody>
         </table>
     </form>
-    </body>
 </html>
