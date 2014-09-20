@@ -21,6 +21,15 @@ body
 {
 	width:570px;
 }
+#box-table-a td:nth-child(3)
+{
+	text-align: right;
+	width:100px;
+}
+#box-table-a td:nth-child(4)
+{
+	width:20px;
+}
 #box-table-a td:nth-child(1)
 {
 	width:10px;
@@ -29,7 +38,7 @@ body
 {
 	padding: 2px;
 	/*background: #e8edff;*/
-	/*border-bottom: 1px solid #fff;*/
+	border-bottom: 1px solid #F2F2F2;
 	color: #669;
 	/*border-top: 1px solid transparent;*/
 }

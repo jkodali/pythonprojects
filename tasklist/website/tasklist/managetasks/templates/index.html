@@ -15,7 +15,7 @@
             <tbody class="past-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Past</td>
+                    <td colspan="3">Past</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -23,14 +23,15 @@
                 <tr>
                     <td><input type="checkbox"/></td>
                     <td>{{ task.task }}</td>
-                    <td>{{ task.next_date }}</td>
+                    <td>{{ task.getFriendlyDate }}</td>
+                    <td/>
                 </tr>
         {% endfor %}
             </tbody>
             <tbody class="today-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Today</td>
+                    <td colspan="3">Today</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -39,13 +40,14 @@
                     <td><input type="checkbox"/></td>
                     <td>{{ task.task }}</td>
                     <td>{{ task.next_date }}</td>
+                    <td/>
                 </tr>
         {% endfor %}
             </tbody>
             <tbody class="tomorrow-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Tomorrow</td>
+                    <td colspan="3">Tomorrow</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -54,13 +56,14 @@
                     <td><input type="checkbox"/></td>
                     <td>{{ task.task }}</td>
                     <td>{{ task.next_date }}</td>
+                    <td/>
                 </tr>
         {% endfor %}
             </tbody>
             <tbody class="future-header">
                 <tr>
                     <td/>
-                    <td colspan="2">Future and No Date</td>
+                    <td colspan="3">Future and No Date</td>
                 </tr>
             </tbody>
             <tbody class="normal">
@@ -69,6 +72,7 @@
                     <td><input type="checkbox"/></td>
                     <td>{{ task.task }}</td>
                     <td>{{ task.next_date }}</td>
+                    <td/>
                 </tr>
         {% endfor %}
             </tbody>

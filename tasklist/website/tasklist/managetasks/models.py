@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class TaskList(models.Model):
@@ -19,6 +20,13 @@ class TaskList(models.Model):
 
 	def __str__(self):
 		return self.task
+
+	def getFriendlyDate(self):
+		return self.next_date
+		if self.next_date.year != datetime.date.today().year:
+			return self.next_date
+		else:
+			return '%s/%s' % (self.next_date.month, self.next_date.day) 
 
 	class Meta:
 		db_table = "task_list"
