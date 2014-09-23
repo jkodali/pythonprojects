@@ -11,17 +11,17 @@
 
     <form>
         {% csrf_token %}
-        <table id="box-table-a" name="box-table-a">
+        <div id="task-list-div">
+        <table id="task-list-table" name="task-list-table">
             <tbody class="past-header">
                 <tr>
-                    <td/>
-                    <td colspan="3">Past</td>
+                    <td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Past</td>
                 </tr>
             </tbody>
             <tbody class="normal">
         {% for task in list_past %}
                 <tr>
-                    <td><input type="checkbox"/></td>
+                    <td><input name="selectedId" value="{{ task.id }}" type="checkbox"/></td>
                     <td>{{ task.task }}</td>
                     <td>{{ task.getFriendlyDate }}</td>
                     <td/>
@@ -30,48 +30,45 @@
             </tbody>
             <tbody class="today-header">
                 <tr>
-                    <td/>
-                    <td colspan="3">Today</td>
+                    <td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Today</td>
                 </tr>
             </tbody>
             <tbody class="normal">
         {% for task in list_today %}
                 <tr>
-                    <td><input type="checkbox"/></td>
+                    <td><input name="selectedId" value="{{ task.id }}" type="checkbox"/></td>
                     <td>{{ task.task }}</td>
-                    <td>{{ task.next_date }}</td>
+                    <td>{{ task.getFriendlyDate }}</td>
                     <td/>
                 </tr>
         {% endfor %}
             </tbody>
             <tbody class="tomorrow-header">
                 <tr>
-                    <td/>
-                    <td colspan="3">Tomorrow</td>
+                    <td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tomorrow</td>
                 </tr>
             </tbody>
             <tbody class="normal">
         {% for task in list_tomorrow %}
                 <tr>
-                    <td><input type="checkbox"/></td>
+                    <td><input name="selectedId" value="{{ task.id }}" type="checkbox"/></td>
                     <td>{{ task.task }}</td>
-                    <td>{{ task.next_date }}</td>
+                    <td>{{ task.getFriendlyDate }}</td>
                     <td/>
                 </tr>
         {% endfor %}
             </tbody>
             <tbody class="future-header">
                 <tr>
-                    <td/>
-                    <td colspan="3">Future and No Date</td>
+                    <td colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Future and No Date</td>
                 </tr>
             </tbody>
             <tbody class="normal">
         {% for task in list_future %}
                 <tr>
-                    <td><input type="checkbox"/></td>
+                    <td><input name="selectedId" value="{{ task.id }}" type="checkbox"/></td>
                     <td>{{ task.task }}</td>
-                    <td>{{ task.next_date }}</td>
+                    <td>{{ task.getFriendlyDate }}</td>
                     <td/>
                 </tr>
         {% endfor %}
@@ -79,12 +76,22 @@
             <tbody class="normal">
         {% for task in list_nodate %}
                 <tr>
-                    <td><input type="checkbox"/></td>
+                    <td><input name="selectedId" value="{{ task.id }}" type="checkbox"/></td>
                     <td>{{ task.task }}</td>
+                    <td></td>
                     <td></td>
                 </tr>
         {% endfor %}
             </tbody>
+            <!-- add another row so that black border is showin -->
+            <tbody class="bottom">
+                <tr>
+                    <td colspan="4"></td>
+                </tr>
+            </tbody>
         </table>
+        </div>
+        <div id="task-detail-div">
+        </div>
     </form>
 </html>

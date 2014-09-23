@@ -2,7 +2,7 @@ $(document).ready(function() {
 
         // JQuery code to be added in here.
 
-	$("#box-table-a tr").click(function(e){
+	$("#task-list-table tr").click(function(e){
 		var row = $(e.target).parent();
 		var tbody = $(row).parent();
 
@@ -24,7 +24,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#box-table-a input[type='checkbox'").change(function(e) {
+	$("#task-list-table input[type='checkbox'").change(function(e) {
 		var cell = $(e.target).parent();
 		var row = $(cell).parent();
 
