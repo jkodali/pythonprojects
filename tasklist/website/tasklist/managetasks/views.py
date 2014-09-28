@@ -115,7 +115,7 @@ def index(request):
 	return render(
 			request,
 			'index.html',
-			{'list_past': list_past, 'list_today': list_today, 'list_tomorrow': list_tomorrow, 'list_future': list_future, 'list_nodate': list_nodate, 'today': today}
+			{'list': taskList, 'list_past': list_past, 'list_today': list_today, 'list_tomorrow': list_tomorrow, 'list_future': list_future, 'list_nodate': list_nodate, 'today': today}
 	)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.

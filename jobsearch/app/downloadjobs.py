@@ -135,7 +135,7 @@ def loadDataIntoDBFromFile(jobsite, searchstring, citytosearch, ziptosearch):
 		#print linecount
 		#postedDate = datetime.datetime.strptime(lineparts[5].strip(), '%m-%d-%Y').strftime('%Y-%m-%d')
 		#queryData.append((lineparts[0], lineparts[1], lineparts[2], lineparts[4], postedDate, postedDate, now, postedDate, now))
-		query = "INSERT INTO job_list (JobSite, SearchString, CityToSearch, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, citytosearch, lineparts[0][:128].replace("'", "\\'"), lineparts[1].replace("'", "\\'"), lineparts[2][:64].replace("'", "\\'"), lineparts[4][:128].replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
+		query = "INSERT INTO job_list (JobSite, SearchString, CityToSearch, Title, JobLink, CompanyName, City, OriginalDatePosted, LastDatePosted, LastUpdate) values ('%s', '%s','%s','%s','%s','%s','%s','%s','%s','%s') ON DUPLICATE KEY UPDATE LastDatePosted='%s', LastUpdate='%s'" % (jobsite, searchstring, citytosearch, lineparts[0][:128].replace("\\", "").replace("'", "\\'"), lineparts[1].replace("\\", "").replace("'", "\\'"), lineparts[2][:64].replace("\\", "").replace("'", "\\'"), lineparts[4][:128].replace("\\", "").replace("'", "\\'"), postedDate, postedDate, now, postedDate, now)
 		#print query
 		cursor.execute(query)
 

@@ -22,11 +22,11 @@ class TaskList(models.Model):
 		return self.task
 
 	def getFriendlyDate(self):
-		return self.next_date
+		#return self.next_date
 		if self.next_date.year != datetime.date.today().year:
 			return self.next_date
 		else:
-			return '%s/%s' % (self.next_date.month, self.next_date.day) 
+			return '%s %s' % (self.next_date.strftime('%b'), self.next_date.day) 
 
 	class Meta:
 		db_table = "task_list"

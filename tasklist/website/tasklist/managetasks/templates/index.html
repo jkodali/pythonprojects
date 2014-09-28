@@ -9,6 +9,23 @@
         <script src="{{ STATIC_URL }}js/tasklist.js"></script>
     </head>
 
+    <script>
+    var taskListData = new Object();
+    {% for task in list %}
+    taskListData[{{ task.id }}] = new Object();
+    taskListData[{{ task.id }}].task = '{{ task.task }}';
+    taskListData[{{ task.id }}].category = '{{ task.category }}';
+    taskListData[{{ task.id }}].store = '{{ task.store }}';
+    taskListData[{{ task.id }}].next_date = '{{ task.next_date }}';
+    taskListData[{{ task.id }}].start_date = '{{ task.start_date }}';
+    taskListData[{{ task.id }}].reminder = '{{ task.custom_reminder_in_hours }}';
+    taskListData[{{ task.id }}].frequency = '{{ task.frequency }}';
+    taskListData[{{ task.id }}].end_date = '{{ task.end_date }}';
+    taskListData[{{ task.id }}].instances = '{{ task.instances_to_stop_after }}';
+    taskListData[{{ task.id }}].repeat_after_previous_done = '{{ task.repeat_after_previous_done }}';
+    {% endfor %}
+    </script>
+
     <form>
         {% csrf_token %}
         <div id="task-list-div">
