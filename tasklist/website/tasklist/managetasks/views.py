@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from models import TaskList
+from django.db import connection
+import json
 import datetime
 
 # Create your views here.
@@ -87,6 +89,23 @@ def user_login(request):
 		# No context variables to pass to the template system, hence the
 		# blank dictionary object...
 		return render(request, 'login.html')
+
+@login_required
+def savetasks(request):
+	if request.method == "POST":
+		now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		today = datetime.datetime.now().strftime('%Y-%m-%d')
+		save_type = request.POST['save_type']
+		task_name = request.POST['task_name']
+		due_date = request.POST['due_date']
+		if (save_type == 'add'):
+			cursor = connection.cursor()
+			sqlscript = "insert into task_list (user_id, task, create_date, last_update, start_date, next_date) values (%s, '%s', '%s', '%s', '%s', '%s')" % (request.user.id, task_name, today, now, due_date, due_date)
+			cursor.execute(sqlscript)
+
+			response_dict = {}
+			response_dict.update({'server_response': 'hi'})
+			return HttpResponse(json.dumps(response_dict), mimetype='application/javascript')
 
 @login_required
 def index(request):

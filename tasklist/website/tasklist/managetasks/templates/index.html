@@ -24,6 +24,8 @@
     taskListData[{{ task.id }}].instances = '{{ task.instances_to_stop_after }}';
     taskListData[{{ task.id }}].repeat_after_previous_done = '{{ task.repeat_after_previous_done }}';
     {% endfor %}
+
+    var csrf_token = '{{ csrf_token }}';
     </script>
 
     <form>
@@ -109,6 +111,9 @@
         </table>
         </div>
         <div id="task-detail-div">
+            <label style="width:100px">Task: </label><input id="taskname" name="taskname" style="width:300px"/><br/>
+            <label style="width:100px">Due: </label><input id="duedate" name="duedate"/><br/>
+            <input type="button" id="add" value="Add"/>
         </div>
     </form>
 </html>

@@ -33,4 +33,28 @@ $(document).ready(function() {
 		else
 			row[0].className = '';
 	});
+
+	$("#add").click(function(e) {
+		var savetype = 'add';
+		$.ajax({
+			url: "savetasks/",
+			type: "POST",
+			dataType: "json",
+			data : {
+				save_type: savetype,
+				task_name: $("#taskname").val(),
+				due_date: $("#duedate").val(),
+				csrfmiddlewaretoken: csrf_token
+			},
+			success: function(json) {
+				$("#taskname").val('');
+				$("#duedate").val('');
+				alert('success');
+			},
+			error: function(xhr, errmsg, err) {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		});
+		return false;
+	});
 });
