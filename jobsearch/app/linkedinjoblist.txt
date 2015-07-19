@@ -1,0 +1,28 @@
+Enterprise Sales Executive - Healthcare - Mobile - MIDWEST	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24452331	CyberCoders		Chicago, IL	2014-10-02
+Lead OBIEE Application Developer	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24438203	Confidential		Addison, IL	2014-10-02
+Principal Data Center Solutions Architect / SME - Chicagoland	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24434423	CyberCoders		Chicago, IL	2014-10-02
+Virtualization Solutions SME - Regional VMWare Solutions SME	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24431609	CyberCoders		Chicago, IL	2014-10-02
+Assoc. Director - IT IS	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24405437	Cognizant Technology Solutions		US-Illinois-Chicago	2014-10-02
+Sr. Java Developer/Architect	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24363008	Confidential		Chicago, IL	2014-10-01
+Associate Director, Digital Ad Technology Solutions	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24359676	Annalect		Chicago	2014-10-01
+Information Technology Technical Associate (Desktop & Server Support)	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24353762	University of Illinois at Chicago		Greater Chicago Area	2014-10-01
+Programmer Analyst (iSeries; AS400)	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24347863	Brilliant		Greater Chicago Area	2014-10-01
+Director Business Continuity Planning	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24293535	The CME Group		Chicago	2014-10-01
+Business Development Director	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24256196	Wipro		Greater Chicago Area	2014-09-30
+Network Analyst	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24252647	Brilliant		Chicago, IL	2014-09-30
+Director Front End Development	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24243057	Sears Holdings Corporation		Greater Chicago Area	2014-09-30
+Inside Business Development Representative	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24242532	Siteworx, LLC		Chicago, IL	2014-09-30
+Director of Information Technology	https://api.linkedin.com/v1/jobs?viewJob=&jobId=24193806	STATS LLC		Northbrook, IL	2014-09-30
+Senior Director IT Development & Quality Assurance	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23891175	US Cellular		BENSENVILLE, IL, US	2014-09-30
+MongoDB Team Director, IT Product Development	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23726310	Fitch Ratings		US-Chicago- Illinois	2014-09-30
+Development Director  Execution and Market Data	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23603296	PEAK6 Investments LP		Greater Chicago Area	2014-09-30
+Sr. Director Practice Services	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23579696	CA Technologies		Greater Chicago Area	2014-09-29
+Testing Specialist (IO)	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23540886	Capital One		USA-Illinois-Chicago	2014-09-29
+Technical Operations Support Specialist	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23294722	Legacy.com		Greater Chicago Area	2014-09-26
+Sr Business Analyst ( SalesForce.com )	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23277571	IT Associates		Rosemont, IL	2014-09-26
+Business Analyst/Project Manager Rotational Program	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23263771	CNA Insurance		Chicago, IL	2014-09-26
+Information Technology Internship Program	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23262840	CNA Insurance		Chicago, IL	2014-09-26
+Client Program Manager	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23226213	UL		Westmont, IL	2014-09-26
+Director of Technology	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23223197	Human Synergistics		Greater Chicago Area	2014-09-25
+Senior Programmer Analyst	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23198041	Transplace/Celtic		Tinley Park, IL.	2014-09-25
+Architect- Supply Chain Systems	https://api.linkedin.com/v1/jobs?viewJob=&jobId=23196039	Sears Holdings Corporation		Greater Chicago Area	2014-09-25

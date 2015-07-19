@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    $('#datetimepicker6').datetimepicker();
+
+
         // JQuery code to be added in here.
 
 	$("#task-list-table tr").click(function(e){

@@ -1,0 +1,9 @@
+install node.js - http://nodejs.org/
+node is installed in program files folder
+install bower - http://bower.io/
+gets installed in C:\Users\jeevan\AppData\Roaming\npm
+run bower install eonasdan-bootstrap-datetimepicker#latest --save
+if no git install or put it in path
+install nuget from http://docs.nuget.org/docs/start-here/installing-nuget
+nuget install Bootstrap.v3.Datetimepicker.css - to install css of datetimepicker
+
